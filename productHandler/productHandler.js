@@ -13,6 +13,7 @@ products.get('/all-drugs', async (req, res)=>{
     const allDrugs = await productCollection.find().toArray();
     res.send(allDrugs);
 })
+
 products.get('/most-ordered', async (req, res)=>{
     const query = {generic : "Paracetamol"}
     const allDrugs = await productCollection.find(query).limit(8).toArray();

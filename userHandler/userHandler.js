@@ -26,9 +26,11 @@ users.post('/', async (req, res) => {
 
 })
 
-users.patch('/', async (req, res) => {
-    const user = await UsersCollection.findOne();
-    res.send(user);
+users.patch('/update/:email', async (req, res) => {
+    const userOjbect = req.body;
+    const email = req.params.email;
+    const updatedUser = await UsersCollection.updateOne({email: email},{$set: userOjbect});
+    res.send(updatedUser);
 })
 
 
