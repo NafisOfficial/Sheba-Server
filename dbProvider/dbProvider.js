@@ -17,7 +17,7 @@ async function run(){
 
     }finally{
         //close the server
-        // await client.close();
+        await client.close();
     }
 }run().catch(console.log);
 
