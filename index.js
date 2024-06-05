@@ -2,7 +2,8 @@
 const express = require('express')
 const cors = require('cors')
 const dotEnv = require('dotenv');
-const users = require('./userHandler/userHandler')
+const users = require('./userHandler/userHandler');
+const products = require('./productHandler/productHandler');
 
 
 const app = express()
@@ -22,6 +23,7 @@ app.get("/",(req,res)=>{
     res.send("Server in running ok")
 })
 app.use('/users',users);
+app.use('/drugs',products)
 
 
 

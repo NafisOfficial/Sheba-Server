@@ -8,8 +8,9 @@ const users = express.Router();
 const UsersCollection = database.collection('users')
 
 
-users.get('/', async (req, res) => {
-    const user = await UsersCollection.findOne();
+users.get('/:email', async (req, res) => {
+    const email = req.params.email;
+    const user = await UsersCollection.findOne({email: email});
     res.send(user);
 })
 
