@@ -1,5 +1,6 @@
 const express = require('express');
 const {database}  = require('../dbProvider/dbProvider');
+const { ObjectId } = require('mongodb');
 
 
 const carts = express.Router();
@@ -29,8 +30,9 @@ carts.delete('/', async (req,res)=>{
 
 //delete single carts
 carts.delete('/singleCart', async (req,res)=>{
-    const query = req.query;
-    const result = cartCollection.deleteOne(query);
+    const email = req.query.email;
+    const id = req.query.id;
+    const result = cartCollection.deleteOne({userEmail: email,_id: new ObjectId(id)});
     res.send(result);
 });
 
