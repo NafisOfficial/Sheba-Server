@@ -4,6 +4,7 @@ const cors = require('cors')
 const dotEnv = require('dotenv');
 const users = require('./userHandler/userHandler');
 const products = require('./productHandler/productHandler');
+const carts = require('./cartHandler/cartHandler');
 
 
 const app = express()
@@ -22,8 +23,10 @@ const port = process.env.PORT || 5000;
 app.get("/",(req,res)=>{
     res.send("Server in running ok")
 })
+
 app.use('/users',users);
-app.use('/drugs',products)
+app.use('/drugs',products);
+app.use('/carts',carts);
 
 
 
