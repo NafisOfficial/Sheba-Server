@@ -1,3 +1,10 @@
+/*------------------------------------------
+    Developer Info:
+    Name: Md Nafis Iqbal
+    email: nafisiqbal.net2002@gmail.com
+    whatsapp: +8801709912722
+-------------------------------------------*/
+
 //dependencies
 const express = require('express')
 const cors = require('cors')

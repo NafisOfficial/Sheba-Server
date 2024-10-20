@@ -18,16 +18,16 @@ products.get('/most-ordered', async (req, res)=>{
     const query = {generic : "Paracetamol"}
     const allDrugs = await productCollection.find(query).limit(8).toArray();
     res.send(allDrugs);
-})
+})   
 
 
 products.get('/category', async (req, res)=>{
     const {brand,dose,form,generic,company_name} = req.query;
+    console.log(req.query);
     const query = {}
-
-    if(brand) query.brand = brand;
-    if(dose) query.dose = dose;
-    if(form) query.form = form;
+    if(brand) query.brand = new RegExp(`${brand}`,"i");
+    if(dose) query.dose = new RegExp(`${dose}`,"i");;
+    if(form) query.form = new RegExp(`${form}`,"i");;
     if(generic) query.generic = new RegExp(`${generic}`,'i');
     if(company_name) query.company_name = new RegExp(`${company_name}`,'i');
 
@@ -41,8 +41,6 @@ products.get('/:id', async (req, res)=>{
     const allDrugs = await productCollection.find({_id: new ObjectId(id)}).toArray();
     res.send(allDrugs);
 })
-
-
 
 
 
