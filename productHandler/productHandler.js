@@ -23,7 +23,6 @@ products.get('/most-ordered', async (req, res)=>{
 
 products.get('/category', async (req, res)=>{
     const {brand,dose,form,generic,company_name} = req.query;
-    console.log(req.query);
     const query = {}
     if(brand) query.brand = new RegExp(`${brand}`,"i");
     if(dose) query.dose = new RegExp(`${dose}`,"i");;
@@ -33,6 +32,12 @@ products.get('/category', async (req, res)=>{
 
     const allDrugs = await productCollection.find(query).toArray();
     res.send(allDrugs);
+})
+
+products.get('/options/:name', async(req,res)=>{
+    const name = req.params.name;
+    const options = await productCollection.distinct(name);
+    res.send(options);
 })
 
 
