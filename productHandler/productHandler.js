@@ -23,14 +23,34 @@ products.get('/most-ordered', async (req, res)=>{
 
 products.get('/category', async (req, res)=>{
     const {brand,dose,form,generic,company_name} = req.query;
-    const query = {}
-    if(brand) query.brand = new RegExp(`${brand}`,"i");
-    if(dose) query.dose = new RegExp(`${dose}`,"i");;
-    if(form) query.form = new RegExp(`${form}`,"i");;
-    if(generic) query.generic = new RegExp(`${generic}`,'i');
-    if(company_name) query.company_name = new RegExp(`${company_name}`,'i');
+    const filters = {}
+    if(brand){
+        const escapedInput =  brand.replace(/([.?*+^$[\]\\(){}|-])/g,"");
+        const brands = escapedInput.split(',');
+        filters.brand = {$in: brands.map((brand)=>new RegExp(brand,"i"))};
+    }
+    if(dose){
+        const escapedInput =  dose.replace(/([.?*+^$[\]\\(){}|-])/g, "");
+        const doses= escapedInput.split(',');
+        filters.dose = {$in: doses.map((dose)=>new RegExp(dose,"i"))};
+    }
+    if(form){
+        const escapedInput =  form.replace(/([.?*+^$[\]\\(){}|-])/g, "");
+        const forms= escapedInput.split(',');
+        filters.form = {$in: forms.map((forms)=>new RegExp(forms,"i"))};
+    }
+    if(generic){
+        const escapedInput =  generic.replace(/([.?*+^$[\]\\(){}|-])/g, "");
+        const generics= escapedInput.split(',');
+        filters.generic = {$in: generics.map((generic)=>new RegExp(generic,"i"))};
+    }
+    if(company_name){
+        const escapedInput =  company_name.replace(/([.?*+^$[\]\\(){}|-])/g, "");
+        const companyNames= escapedInput.split(',');
+        filters.company_name = {$in: companyNames.map((name)=>new RegExp(name,"i"))};
+    };
 
-    const allDrugs = await productCollection.find(query).toArray();
+    const allDrugs = await productCollection.find(filters).toArray();
     res.send(allDrugs);
 })
 
