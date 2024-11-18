@@ -19,11 +19,11 @@ carts.post('/',async (req,res)=>{
 });
 
 
-// carts.patch();
 
 //delete all carts
 carts.delete('/delete/all', async (req,res)=>{
-    const result = cartCollection.deleteMany({});
+    const email = req.query.email;
+    const result = cartCollection.deleteMany({userEmail: email});
     res.send(result);
 });
 
