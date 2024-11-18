@@ -56,6 +56,7 @@ products.get('/category', async (req, res)=>{
 
 products.get('/options/:name', async(req,res)=>{
     const name = req.params.name;
+    console.log(name);
     const options = await productCollection.distinct(name);
     res.send(options);
 })

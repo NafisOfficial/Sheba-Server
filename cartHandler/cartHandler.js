@@ -22,9 +22,8 @@ carts.post('/',async (req,res)=>{
 // carts.patch();
 
 //delete all carts
-carts.delete('/', async (req,res)=>{
-    const query = req.query;
-    const result = cartCollection.deleteMany(query);
+carts.delete('/delete/all', async (req,res)=>{
+    const result = cartCollection.deleteMany({});
     res.send(result);
 });
 
