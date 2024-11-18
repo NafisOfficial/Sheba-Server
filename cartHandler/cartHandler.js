@@ -28,7 +28,7 @@ carts.delete('/delete/all', async (req,res)=>{
 });
 
 //delete single carts
-carts.delete('/singleCart', async (req,res)=>{
+carts.delete('/delete/singleCart', async (req,res)=>{
     const email = req.query.email;
     const id = req.query.id;
     const result = cartCollection.deleteOne({userEmail: email,_id: new ObjectId(id)});
