@@ -62,10 +62,10 @@ products.get('/options/:name', async(req,res)=>{
 })
 
 
-products.get('/:id', async (req, res)=>{
+products.get('/single-drug/:id', async (req, res)=>{
     const id = req.params.id;
-    const allDrugs = await productCollection.find({_id: new ObjectId(id)}).toArray();
-    res.send(allDrugs);
+    const singleDrug = await productCollection.findOne({_id: new ObjectId(id)});
+    res.send(singleDrug);
 })
 
 
