@@ -10,7 +10,7 @@ const productCollection = database.collection("Drugs");
 
 
 products.get('/all-drugs', async (req, res)=>{
-    const allDrugs = await productCollection.find({},{projection: {id:1,brand:1,dose:1,form:1,company_name:1,generic:1,price_per_unit:1}}).toArray();
+    const allDrugs = await productCollection.find({},{projection: {id:1,image:1,brand:1,dose:1,form:1,company_name:1,generic:1,price_per_unit:1}}).toArray();
     res.send(allDrugs);
 })
 
