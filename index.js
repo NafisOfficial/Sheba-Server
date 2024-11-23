@@ -36,18 +36,11 @@ app.use('/drugs',products);
 app.use('/carts',carts);
 
 
-const server = app.listen(port,()=>{
+app.listen(port,()=>{
     console.log(`Server is running on port ${port}`);
 })
 
 
-server.on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-      console.error(`Port ${port} is already in use.`);
-      process.exit(1);
-    } else {
-      console.error(err);
-    }
-  });
 
-module.exports = {app,server};
+
+module.exports = app;
