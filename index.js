@@ -18,6 +18,7 @@ const app = express()
 dotEnv.config();
 app.use(cors())
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // require from environment variable
 
@@ -36,9 +37,18 @@ app.use('/drugs',products);
 app.use('/carts',carts);
 
 
-
-app.listen(port,()=>{
+const server = app.listen(port,()=>{
     console.log(`Server is running on port ${port}`);
 })
 
-module.exports = app;
+
+server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`Port ${port} is already in use.`);
+      process.exit(1);
+    } else {
+      console.error(err);
+    }
+  });
+
+module.exports = {app,server};
