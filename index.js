@@ -9,8 +9,8 @@
 const express = require('express')
 const cors = require('cors')
 const dotEnv = require('dotenv');
-const users = require('./userHandler/userHandler');
-const products = require('./productHandler/productHandler');
+const users = require('./routes/userHandler/userHandler');
+const products = require('./routes/productHandler/productHandler');
 const carts = require('./cartHandler/cartHandler');
 
 
@@ -18,7 +18,7 @@ const app = express()
 dotEnv.config();
 app.use(cors())
 app.use(express.json());
-app.use(express.urlencoded(true))
+app.use(express.urlencoded({ extended: true }))
 
 // require from environment variable
 
