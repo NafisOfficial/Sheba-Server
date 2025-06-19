@@ -1,5 +1,5 @@
 const express = require('express');
-const { database } = require('../dbProvider/dbProvider');
+const { database } = require('../../utilites/dbProvider/dbProvider');
 const { ObjectId } = require('mongodb');
 const dotEnv = require('dotenv');
 const SSLCommerzPayment=require("sslcommerz-lts");

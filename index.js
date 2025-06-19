@@ -9,9 +9,10 @@
 const express = require('express')
 const cors = require('cors')
 const dotEnv = require('dotenv');
-const users = require('./routes/userHandler/userHandler');
-const products = require('./routes/productHandler/productHandler');
-const carts = require('./cartHandler/cartHandler');
+const users = require('./handlers/userHandler/userHandler');
+const products = require('./handlers/productHandler/productHandler');
+const carts = require('./handlers/cartHandler/cartHandler');
+const errorHandler = require('./middlewares/errorHandler/errorHandler')
 
 
 const app = express()
@@ -23,7 +24,7 @@ app.use(express.urlencoded({ extended: true }))
 // require from environment variable
 
 const port = process.env.PORT || 5000;
-
+const environment = process.env.NODE_ENV || "development"
 
 
 
@@ -35,10 +36,10 @@ app.get("/",(req,res)=>{
 app.use('/users',users);
 app.use('/drugs',products);
 app.use('/carts',carts);
-
+app.use(errorHandler);
 
 app.listen(port,()=>{
-    console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on port ${port} and ${environment} mode`);
 })
 
 
