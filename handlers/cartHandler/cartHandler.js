@@ -1,5 +1,6 @@
 const express = require('express');
 const { database } = require('../../utilites/dbProvider/dbProvider');
+const asyncHandler = require('../../utilites/asyncHandler/asyncHandler');
 const { ObjectId } = require('mongodb');
 const dotEnv = require('dotenv');
 const SSLCommerzPayment=require("sslcommerz-lts");
@@ -16,34 +17,34 @@ const cartCollection = database.collection('carts')
 const orderCollection = database.collection('orders')
 const tran_id=new ObjectId().toString();
 
-carts.get('/', async (req, res) => {
+carts.get('/', asyncHandler(async (req, res) => {
     const email = req.query.email;
     const data = await cartCollection.find({ userEmail: email }).toArray();
     res.send(data);
-});
+}));
 
-carts.post('/', async (req, res) => {
+carts.post('/', asyncHandler(async (req, res) => {
     const cartObject = req.body;
     const result = await cartCollection.insertOne(cartObject);
     res.send(result);
-});
+}));
 
 
 
 //delete all carts
-carts.delete('/delete/all', async (req, res) => {
+carts.delete('/delete/all', asyncHandler(async (req, res) => {
     const email = req.query.email;
     const result = cartCollection.deleteMany({ userEmail: email });
     res.send(result);
-});
+}));
 
 //delete single carts
-carts.delete('/delete/singleCart', async (req, res) => {
+carts.delete('/delete/singleCart', asyncHandler(async (req, res) => {
     const email = req.query.email;
     const id = req.query.id;
     const result = cartCollection.deleteOne({ userEmail: email, _id: new ObjectId(id) });
     res.send(result);
-});
+}));
 
 carts.post('/create-payment/:email', async (req, res) => {
     const orderData = req.body;
@@ -106,7 +107,6 @@ carts.post('/create-payment/:email', async (req, res) => {
 
 carts.post("/payment-success", async (req, res) => {
     const {val_id} = req.body;
-
   return  res.redirect("http://localhost:5173/payment-success")
 })
 
