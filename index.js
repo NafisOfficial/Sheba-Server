@@ -12,7 +12,8 @@ const dotEnv = require('dotenv');
 const users = require('./handlers/userHandler/userHandler');
 const products = require('./handlers/productHandler/productHandler');
 const carts = require('./handlers/cartHandler/cartHandler');
-const errorHandler = require('./middlewares/errorHandler/errorHandler')
+const errorHandler = require('./middlewares/errorHandler/errorHandler');
+const sendResponse = require('./utilites/customResponse/customResponse')
 
 
 const app = express()
@@ -30,7 +31,7 @@ const environment = process.env.NODE_ENV || "development"
 
 //routing the handler
 app.get("/",(req,res)=>{
-    res.send("Server in running ok")
+    sendResponse(res,200,true,"Server is running");
 })
 
 app.use('/users',users);
