@@ -1,6 +1,7 @@
 const express = require('express');
 const { database } = require('../../utilites/dbProvider/dbProvider');
 const { ObjectId } = require('mongodb');
+const asyncHandler = require('../../utilites/asyncHandler/asyncHandler');
 
 
 
@@ -9,19 +10,19 @@ const productCollection = database.collection("Drugs");
 
 
 
-products.get('/all-drugs', async (req, res) => {
+products.get('/all-drugs', asyncHandler(async (req, res) => {
     const allDrugs = await productCollection.find({}, { projection: { id: 1, image: 1, brand: 1, dose: 1, form: 1, company_name: 1, generic: 1, price_per_unit: 1 } }).toArray();
     res.send(allDrugs);
-})
+}))
 
-products.get('/most-ordered', async (req, res) => {
+products.get('/most-ordered', asyncHandler(async (req, res) => {
     const query = { generic: "Paracetamol" }
     const allDrugs = await productCollection.find(query).limit(8).toArray();
     res.send(allDrugs);
-})
+}))
 
 
-products.get('/category', async (req, res) => {
+products.get('/category', asyncHandler(async (req, res) => {
     const { brand, dose, form, generic, company_name } = req.query;
     const filters = {}
     if (brand) {
@@ -52,25 +53,24 @@ products.get('/category', async (req, res) => {
 
     const allDrugs = await productCollection.find(filters).toArray();
     res.send(allDrugs);
-})
+}))
 
-products.get('/options/:name', async (req, res) => {
+products.get('/options/:name', asyncHandler(async (req, res) => {
     const name = req.params.name;
     console.log(name);
     const options = await productCollection.distinct(name);
     res.send(options);
-})
+}))
 
 
-products.get('/single-drug/:id', async (req, res) => {
+products.get('/single-drug/:id', asyncHandler(async (req, res) => {
     const id = req.params.id;
     const singleDrug = await productCollection.findOne({ _id: new ObjectId(id) });
     res.send(singleDrug);
-})
+}))
 
 
 
 
 
 module.exports = products
-
