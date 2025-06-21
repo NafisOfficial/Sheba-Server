@@ -16,14 +16,14 @@ products.get('/all-drugs', asyncHandler(async (req, res) => {
     sendResponse(res, 200, true, "All drugs fetched successfully", allDrugs);
 }))
 
-products.get('/most-ordered', asyncHandler(async (req, res) => {
-    const query = { generic: "Paracetamol" }
-    const allDrugs = await productCollection.find(query).limit(8).toArray();
-    res.send(allDrugs);
-}))
+// products.get('/most-ordered', asyncHandler(async (req, res) => {
+//     const query = { generic: "Paracetamol" }
+//     const allDrugs = await productCollection.find(query).limit(8).toArray();
+//     res.send(allDrugs);
+// }))
 
 
-products.get('/category', asyncHandler(async (req, res) => {
+products.get('/category', asyncHandler(async (req, res, next) => {
     const { brand, dose, form, generic, company_name } = req.query;
     const filters = {}
     if (brand) {
@@ -53,14 +53,18 @@ products.get('/category', asyncHandler(async (req, res) => {
     };
 
     const allDrugs = await productCollection.find(filters).toArray();
-    res.send(allDrugs);
+    if(allDrugs.length === 0){
+        const err = new Error("No data found");
+        err.statusCode = 500;
+        next(err);
+    }
+    sendResponse(res,200,true,"Data fetch successfully",allDrugs);
 }))
 
 products.get('/options/:name', asyncHandler(async (req, res) => {
     const name = req.params.name;
-    console.log(name);
     const options = await productCollection.distinct(name);
-    res.send(options);
+    sendResponse(req,200,true,"Data fetch successfully",options);
 }))
 
 
