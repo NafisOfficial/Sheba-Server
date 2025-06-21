@@ -63,8 +63,9 @@ products.get('/category', asyncHandler(async (req, res, next) => {
 
 products.get('/options/:name', asyncHandler(async (req, res) => {
     const name = req.params.name;
+    console.log(name);
     const options = await productCollection.distinct(name);
-    sendResponse(req,200,true,"Data fetch successfully",options);
+    sendResponse(res,200,true,"Data fetch successfully",options);
 }))
 
 
