@@ -54,17 +54,17 @@ products.get('/category', asyncHandler(async (req, res, next) => {
 
     const allDrugs = await productCollection.find(filters).toArray();
     if(allDrugs.length === 0){
-        const err = new Error("No data found");
-        err.statusCode = 500;
-        next(err);
+        return sendResponse(res,200,true,"No data found",allDrugs);
     }
     sendResponse(res,200,true,"Data fetch successfully",allDrugs);
 }))
 
 products.get('/options/:name', asyncHandler(async (req, res) => {
     const name = req.params.name;
-    console.log(name);
     const options = await productCollection.distinct(name);
+    if(options.length === 0){
+        return sendResponse(res,200,true,"No option available",options);
+    }
     sendResponse(res,200,true,"Data fetch successfully",options);
 }))
 
@@ -72,7 +72,7 @@ products.get('/options/:name', asyncHandler(async (req, res) => {
 products.get('/single-drug/:id', asyncHandler(async (req, res) => {
     const id = req.params.id;
     const singleDrug = await productCollection.findOne({ _id: new ObjectId(id) });
-    res.send(singleDrug);
+    sendResponse(res,200,true,"Data fetch successfully",singleDrug);
 }))
 
 
