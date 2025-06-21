@@ -2,6 +2,7 @@ const express = require('express');
 const { database } = require('../../utilites/dbProvider/dbProvider');
 const { ObjectId } = require('mongodb');
 const asyncHandler = require('../../utilites/asyncHandler/asyncHandler');
+const sendResponse = require('../../utilites/customResponse/customResponse')
 
 
 
@@ -12,7 +13,7 @@ const productCollection = database.collection("Drugs");
 
 products.get('/all-drugs', asyncHandler(async (req, res) => {
     const allDrugs = await productCollection.find({}, { projection: { id: 1, image: 1, brand: 1, dose: 1, form: 1, company_name: 1, generic: 1, price_per_unit: 1 } }).toArray();
-    res.send(allDrugs);
+    sendResponse(res, 200, true, "All drugs fetched successfully", allDrugs);
 }))
 
 products.get('/most-ordered', asyncHandler(async (req, res) => {
