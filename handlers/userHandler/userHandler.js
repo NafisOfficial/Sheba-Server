@@ -1,6 +1,7 @@
 const express = require('express');
 const { database } = require('../../utilites/dbProvider/dbProvider');
 const asyncHandler = require('../../utilites/asyncHandler/asyncHandler');
+const sendResponse = require('../../utilites/customResponse/customResponse')
 
 
 
@@ -17,7 +18,7 @@ users.get('/:email', asyncHandler(async (req, res) => {
         err.statusCode = 404;
         return next(err);
     }
-    res.send(user);
+    sendResponse(res, 200, true, "Successfully fetch user data", user);
 }))
 
 users.post('/', asyncHandler(async (req, res) => {
@@ -27,7 +28,7 @@ users.post('/', asyncHandler(async (req, res) => {
         res.send("Login successful")
     } else {
         const result = await UsersCollection.insertOne(userOjbect);
-        res.send(result);
+        sendResponse(res, 200, true, "Successfully created a new user", result);
     }
 }))
 
@@ -43,7 +44,7 @@ users.patch('/update/:email', asyncHandler(async (req, res, next) => {
         return next(error);
     }
 
-    res.send(updatedUser);
+    sendResponse(res, 200, true, "Updated user data", updatedUser);
 }))
 
 

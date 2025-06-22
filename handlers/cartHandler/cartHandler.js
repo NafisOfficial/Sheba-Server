@@ -1,6 +1,7 @@
 const express = require('express');
 const { database } = require('../../utilites/dbProvider/dbProvider');
 const asyncHandler = require('../../utilites/asyncHandler/asyncHandler');
+const sendResponse = require('../../utilites/customResponse/customResponse');
 const { ObjectId } = require('mongodb');
 const dotEnv = require('dotenv');
 const SSLCommerzPayment=require("sslcommerz-lts");
@@ -19,14 +20,17 @@ const tran_id=new ObjectId().toString();
 
 carts.get('/', asyncHandler(async (req, res) => {
     const email = req.query.email;
-    const data = await cartCollection.find({ userEmail: email }).toArray();
-    res.send(data);
+    const data = await cartCollection.find({ userEmail: email }).toArray() || [];
+    if(data.length ===0){
+        return sendResponse(res, 200, true, "No cart data found",data);
+    }
+    sendResponse(res, 200, true, "Successfully fetch cart data", data);
 }));
 
 carts.post('/', asyncHandler(async (req, res) => {
     const cartObject = req.body;
     const result = await cartCollection.insertOne(cartObject);
-    res.send(result);
+    sendResponse(res, 200, true, "Cart item added successfully", result);
 }));
 
 
@@ -35,7 +39,7 @@ carts.post('/', asyncHandler(async (req, res) => {
 carts.delete('/delete/all', asyncHandler(async (req, res) => {
     const email = req.query.email;
     const result = cartCollection.deleteMany({ userEmail: email });
-    res.send(result);
+    sendResponse(res, 200, true, "All Cart item deleted successfully", result);
 }));
 
 //delete single carts
@@ -43,7 +47,7 @@ carts.delete('/delete/singleCart', asyncHandler(async (req, res) => {
     const email = req.query.email;
     const id = req.query.id;
     const result = cartCollection.deleteOne({ userEmail: email, _id: new ObjectId(id) });
-    res.send(result);
+    sendResponse(res, 200, true, "Cart item deleted successfully", result);
 }));
 
 carts.post('/create-payment/:email', async (req, res) => {
