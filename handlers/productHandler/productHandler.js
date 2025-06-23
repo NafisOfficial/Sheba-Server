@@ -52,20 +52,38 @@ products.get('/category', asyncHandler(async (req, res, next) => {
         filters.company_name = { $in: companyNames.map((name) => new RegExp(name, "i")) };
     };
 
-    const allDrugs = await productCollection.find(filters).toArray();
-    if(allDrugs.length === 0){
-        return sendResponse(res,200,true,"No data found",allDrugs);
+    const filteredData = await productCollection.find(filters).toArray();
+
+
+    if(filteredData.length === 0){
+        return sendResponse(res,200,true,"No data found",filteredData);
     }
-    sendResponse(res,200,true,"Data fetch successfully",allDrugs);
+    sendResponse(res,200,true,"Data fetch successfully",filteredData);
 }))
 
-products.get('/options/:name', asyncHandler(async (req, res) => {
-    const name = req.params.name;
-    const options = await productCollection.distinct(name);
-    if(options.length === 0){
-        return sendResponse(res,200,true,"No option available",options);
+products.get('/options', asyncHandler(async (req, res) => {
+    const {opt1,opt2,opt3} = req.query;
+    const allOptions = {}
+    if(opt1){
+        const Options1 = await productCollection.distinct(opt1);
+        allOptions.genericOptions = Options1;
     }
-    sendResponse(res,200,true,"Data fetch successfully",options);
+
+    if(opt2){
+        const Options2 = await productCollection.distinct(opt2);
+        allOptions.doseOptions = Options2;
+    }
+
+    if(opt3){
+        const Options3 = await productCollection.distinct(opt3);
+        allOptions.formOptions = Options3;
+    }
+
+
+    if(allOptions.genericOptions.length === 0 && allOptions.doseOptions.length === 0 && allOptions.formOptions.length === 0){
+        return sendResponse(res,200,true,"No option available",allOptions);
+    }
+    sendResponse(res,200,true,"Data fetch successfully",allOptions);
 }))
 
 
