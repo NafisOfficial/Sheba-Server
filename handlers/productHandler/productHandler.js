@@ -16,11 +16,6 @@ products.get('/all-drugs', asyncHandler(async (req, res) => {
     sendResponse(res, 200, true, "All drugs fetched successfully", allDrugs);
 }))
 
-// products.get('/most-ordered', asyncHandler(async (req, res) => {
-//     const query = { generic: "Paracetamol" }
-//     const allDrugs = await productCollection.find(query).limit(8).toArray();
-//     res.send(allDrugs);
-// }))
 
 // filter and search medicine api
 products.get('/category', asyncHandler(async (req, res) => {
