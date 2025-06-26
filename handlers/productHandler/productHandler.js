@@ -22,7 +22,7 @@ products.get('/all-drugs', asyncHandler(async (req, res) => {
 //     res.send(allDrugs);
 // }))
 
-
+// filter and search medicine api
 products.get('/category', asyncHandler(async (req, res) => {
     const { brand, dose, form, generic, company_name } = req.query;
     const filters = {}
@@ -64,6 +64,7 @@ products.get('/category', asyncHandler(async (req, res) => {
     sendResponse(res,200,true,"Data fetch successfully",filteredData);
 }))
 
+// get distinct option name in each field
 products.get('/options', asyncHandler(async (req, res) => {
     const {opt1,opt2,opt3} = req.query;
     const allOptions = {}
