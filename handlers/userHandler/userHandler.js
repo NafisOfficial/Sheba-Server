@@ -9,6 +9,10 @@ const users = express.Router();
 //get the collection
 const UsersCollection = database.collection('users')
 
+users.get("/all",asyncHandler(async (req,res)=>{
+    const allUsers = await UsersCollection.find().toArray();
+   sendResponse(res, 200, true, "Successfully fetch all user data", allUsers); 
+}))
 
 users.get('/:email', asyncHandler(async (req, res) => {
     const email = req.params.email;
