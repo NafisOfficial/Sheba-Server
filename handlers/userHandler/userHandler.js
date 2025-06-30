@@ -41,7 +41,6 @@ users.patch('/update/:email', asyncHandler(async (req, res, next) => {
     const email = req.params.email;
 
     const updatedUser = await UsersCollection.updateOne({ email: email }, { $set: userOjbect });
-
     if (updatedUser.matchedCount === 0) {
         const error = new Error("User not found");
         error.statusCode = 404
