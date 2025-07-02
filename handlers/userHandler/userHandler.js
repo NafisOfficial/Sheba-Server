@@ -52,7 +52,6 @@ users.patch('/update/:email', asyncHandler(async (req, res, next) => {
 
 users.delete('/delete/:email', asyncHandler(async (req, res, next) => {
     const email = req.params.email;
-    console.log(email);
     const deletedUser = await UsersCollection.deleteOne({ email: email });
     if (deletedUser.deletedCount === 0) {
         const error = new Error("User not found");
