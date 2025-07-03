@@ -39,7 +39,7 @@ users.post('/', asyncHandler(async (req, res) => {
 users.patch('/update/:email', asyncHandler(async (req, res, next) => {
     const userOjbect = req.body;
     const email = req.params.email;
-
+    delete userOjbect._id;
     const updatedUser = await UsersCollection.updateOne({ email: email }, { $set: userOjbect });
     if (updatedUser.matchedCount === 0) {
         const error = new Error("User not found");
