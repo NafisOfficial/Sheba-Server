@@ -1,7 +1,7 @@
 const express = require('express');
 const { database } = require('../../utilites/dbProvider/dbProvider');
 const asyncHandler = require('../../utilites/asyncHandler/asyncHandler');
-const sendResponse = require('../../utilites/customResponse/customResponse')
+const sendResponse = require('../../utilites/customResponse/customResponse');
 
 
 
