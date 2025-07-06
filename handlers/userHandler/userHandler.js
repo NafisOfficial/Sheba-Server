@@ -2,6 +2,7 @@ const express = require('express');
 const { database } = require('../../utilites/dbProvider/dbProvider');
 const asyncHandler = require('../../utilites/asyncHandler/asyncHandler');
 const sendResponse = require('../../utilites/customResponse/customResponse');
+const admin = require("../../utilites/firebase-admin/admin")
 
 
 
@@ -52,14 +53,15 @@ users.patch('/update/:email', asyncHandler(async (req, res, next) => {
 
 users.delete('/delete/:email', asyncHandler(async (req, res, next) => {
     const email = req.params.email;
+    const user = await admin.auth().getUserByEmail(email);
     const deletedUser = await UsersCollection.deleteOne({ email: email });
     if (deletedUser.deletedCount === 0) {
         const error = new Error("User not found");
         error.statusCode = 404
         return next(error);
     }
-
-    sendResponse(res, 200, true, "Deleted user data", deletedUser);
+    await admin.auth().deleteUser(user.uid);
+    sendResponse(res, 200, true, "Deleted user data", result);
 }))
 
 

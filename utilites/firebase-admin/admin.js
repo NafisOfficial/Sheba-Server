@@ -1,5 +1,6 @@
 const admin = require('firebase-admin');
 const dotEnv = require("dotenv");
+dotEnv.config()
 
 
 
