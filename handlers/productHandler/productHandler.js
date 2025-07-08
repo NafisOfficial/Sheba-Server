@@ -12,8 +12,17 @@ const productCollection = database.collection("Drugs");
 
 
 products.get('/all-drugs', asyncHandler(async (req, res) => {
-    const allDrugs = await productCollection.find({}, { projection: { id: 1, image: 1, brand: 1, dose: 1, form: 1, company_name: 1, generic: 1, price_per_unit: 1 } }).toArray();
+    const allDrugs = await productCollection.find({},{ projection: { id: 1, image: 1, brand: 1, dose: 1, form: 1, company_name: 1, generic: 1, price_per_unit: 1 } }).toArray();
     sendResponse(res, 200, true, "All drugs fetched successfully", allDrugs);
+}))
+
+
+products.get("/limited-drugs",asyncHandler(async (req, res)=>{
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 8;
+    const skip = (page-1) * limit;
+    const allDrugs = await productCollection.find({}).skip(skip).limit(limit).toArray();
+    sendResponse(res, 200, true, "All drugs fetched successfully", allDrugs)
 }))
 
 
