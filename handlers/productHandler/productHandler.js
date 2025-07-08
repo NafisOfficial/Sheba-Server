@@ -22,7 +22,9 @@ products.get("/limited-drugs",asyncHandler(async (req, res)=>{
     const limit = Number(req.query.limit) || 8;
     const skip = (page-1) * limit;
     const allDrugs = await productCollection.find({}).skip(skip).limit(limit).toArray();
-    sendResponse(res, 200, true, "All drugs fetched successfully", allDrugs)
+    const totalDrug = await productCollection.countDocuments();
+    const drugData = {allDrugs,totalDrug}
+    sendResponse(res, 200, true, "All drugs fetched successfully", drugData)
 }))
 
 
