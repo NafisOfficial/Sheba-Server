@@ -16,6 +16,13 @@ products.get('/all-drugs', asyncHandler(async (req, res) => {
     sendResponse(res, 200, true, "All drugs fetched successfully", allDrugs);
 }))
 
+products.delete('/all-drugs',asyncHandler(async (req, res)=>{
+    const id = req.params._id;
+    const deletedProduct = await productCollection.deletedOne({_id: ObjectId(id)});
+
+    sendResponse(res, 200, true, `Id: ${id} drug deleted successfully `, allDrugs);
+}))
+
 
 products.get("/limited-drugs",asyncHandler(async (req, res)=>{
     const page = Number(req.query.page) || 1;
@@ -26,6 +33,7 @@ products.get("/limited-drugs",asyncHandler(async (req, res)=>{
     const drugData = {allDrugs,totalDrug}
     sendResponse(res, 200, true, "All drugs fetched successfully", drugData)
 }))
+
 
 
 // filter and search medicine api
