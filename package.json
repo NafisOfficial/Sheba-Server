@@ -17,6 +17,7 @@
     "express": "^4.19.2",
     "firebase-admin": "^13.4.0",
     "mongodb": "^6.7.0",
+    "multer": "^2.0.1",
     "sslcommerz-lts": "^1.1.0"
   }
 }
