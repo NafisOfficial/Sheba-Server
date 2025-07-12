@@ -56,15 +56,19 @@ products.post('/all-drugs', upload.single("image"), async (req, res, next) => {
         sendResponse(res, 200, true, "Image upload successfully", addedProduct);
 
     } catch (error) {
-        console.log(error);
         sendResponse(res, 103, false, "Empty Upload resource", error);
     }
 
 })
 
-products.delete('/all-drugs', asyncHandler(async (req, res) => {
-    const id = req.params._id;
-    const deletedProduct = await productCollection.deletedOne({ _id: ObjectId(id) });
+products.delete('/all-drugs/:id', asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    try {
+        const deletedProduct = await productCollection.deleteOne({ _id: new ObjectId(id) });
+        console.log(deletedProduct);
+    } catch (error) {
+        console.log(error);
+    }
     sendResponse(res, 200, true, `Id: ${id} drug deleted successfully `, deletedProduct);
 }))
 
