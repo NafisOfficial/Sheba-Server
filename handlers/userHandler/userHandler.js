@@ -30,8 +30,9 @@ users.post('/', asyncHandler(async (req, res) => {
     const userOjbect = req.body;
     isUserExists = await UsersCollection.findOne({ email: userOjbect?.email })
     if (isUserExists) {
-        res.send("Login successful")
+        res.send("Login successful");
     } else {
+        userOjbect.role = "user";
         const result = await UsersCollection.insertOne(userOjbect);
         sendResponse(res, 200, true, "Successfully created a new user", result);
     }
