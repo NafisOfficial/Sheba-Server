@@ -71,13 +71,12 @@ products.delete('/all-drugs/:id', asyncHandler(async (req, res) => {
     }
 }))
 
-products.patch('/update/:id', asyncHandler(async (req, res) => {
+products.patch('/update/:id',upload.single("image"), asyncHandler(async (req, res) => {
     const id = req.params.id;
+    const others = req.body;
     try {
-        const others = req.body;
-        const updatedProduct = await productCollection.updateOne({_id: new ObjectId(id)},{others});
-        console.log(updatedProduct);
-        sendResponse(res, 200, true, "Data update successfully", deletedProduct);
+        const updatedProduct = await productCollection.updateOne({_id: new ObjectId(id)},{$set: others});
+        sendResponse(res, 200, true, "Data update successfully", updatedProduct);
     } catch (error) {
         console.log(error);
     }
