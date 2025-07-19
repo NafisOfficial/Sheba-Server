@@ -10,7 +10,6 @@ const SSLCommerzPayment=require("sslcommerz-lts");
 dotEnv.config();
 
 
-const is_live=false;
 
 
 const carts = express.Router();

@@ -4,7 +4,7 @@ const { ObjectId } = require('mongodb');
 const asyncHandler = require('../../utilites/asyncHandler/asyncHandler');
 const sendResponse = require('../../utilites/customResponse/customResponse');
 const multer = require('multer');
-const dotEnv = require("dotenv")
+const dotEnv = require("dotenv");
 
 
 dotEnv.config();
@@ -65,11 +65,22 @@ products.delete('/all-drugs/:id', asyncHandler(async (req, res) => {
     const id = req.params.id;
     try {
         const deletedProduct = await productCollection.deleteOne({ _id: new ObjectId(id) });
-        console.log(deletedProduct);
+        sendResponse(res, 200, true, `Id: ${id} drug deleted successfully `, deletedProduct);
     } catch (error) {
         console.log(error);
     }
-    sendResponse(res, 200, true, `Id: ${id} drug deleted successfully `, deletedProduct);
+}))
+
+products.patch('/update/:id', asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    try {
+        const others = req.body;
+        const updatedProduct = await productCollection.updateOne({_id: new ObjectId(id)},{others});
+        console.log(updatedProduct);
+        sendResponse(res, 200, true, "Data update successfully", deletedProduct);
+    } catch (error) {
+        console.log(error);
+    }
 }))
 
 
