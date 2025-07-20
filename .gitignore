@@ -1,5 +1,5 @@
 node_modules
-.env
 data.json
 newData.json
 firebaseService.js
+config.bat

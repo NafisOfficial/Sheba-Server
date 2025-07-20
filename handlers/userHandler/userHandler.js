@@ -2,8 +2,9 @@ const express = require('express');
 const { database } = require('../../utilites/dbProvider/dbProvider');
 const asyncHandler = require('../../utilites/asyncHandler/asyncHandler');
 const sendResponse = require('../../utilites/customResponse/customResponse');
-const admin = require("../../utilites/firebase-admin/admin")
-
+const admin = require("../../utilites/firebase-admin/admin");
+const jwt = require('jsonwebtoken');
+require("dotenv").config();
 
 
 const users = express.Router();
@@ -26,15 +27,46 @@ users.get('/:email', asyncHandler(async (req, res) => {
     sendResponse(res, 200, true, "Successfully fetch user data", user);
 }))
 
-users.post('/', asyncHandler(async (req, res) => {
-    const userOjbect = req.body;
-    isUserExists = await UsersCollection.findOne({ email: userOjbect?.email })
+
+users.post('/login',async (req,res)=>{
+    const {email} = req.body;
+    
+    try {
+        const isUserExists = await UsersCollection.findOne({email})
+        
+        if(!isUserExists){
+            sendResponse(res, 404, false, "Invalid email or password")
+        }else{
+            const {name,email, role} = isUserExists;
+            const payload = {name, email, role}
+            if(role === "admin"){
+                const token = jwt.sign(payload,process.env.JWT_ADMIN_SECRET,{expiresIn: "1h"})
+                sendResponse(res,200, true, "login successful",{token})
+            }else{
+                const token = jwt.sign(payload,process.env.JWT_USER_SECRET,{expiresIn: "1h"});
+                sendResponse(res,200, true, "login successful",{token})
+            }
+            
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+users.post('/signup', asyncHandler(async (req, res) => {
+    const {name,email,photoURL} = req.body;
+    
+    isUserExists = await UsersCollection.findOne({email});
     if (isUserExists) {
-        res.send("Login successful");
+        sendResponse(res, 400, false, "Email already used to create user",);
     } else {
-        userOjbect.role = "user";
-        const result = await UsersCollection.insertOne(userOjbect);
-        sendResponse(res, 200, true, "Successfully created a new user", result);
+        const role = "user";
+        const userObject = {name,email,photoURL,role};
+        const payload = {name,email,role}
+        const token = jwt.sign(payload,process.env.JWT_USER_SECRET,{expiresIn: "1h"});
+        const result = await UsersCollection.insertOne(userObject);
+        sendResponse(res, 200, true, "Successfully created a new user", {token});
     }
 }))
 
